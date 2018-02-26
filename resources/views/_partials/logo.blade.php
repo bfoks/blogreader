@@ -1,0 +1,1 @@
+<span class="text-black">blogreader.</span><span class="text-indigo-light">pro</span>
