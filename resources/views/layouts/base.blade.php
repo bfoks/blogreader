@@ -8,6 +8,12 @@
 
     {{--<link href="https://use.fontawesome.com/releases/v5.0.6/css/all.css" rel="stylesheet">--}}
 
+    <style>
+        html, body {
+            height: 100%;
+        }
+    </style>
+
     <link href="{{ asset('css/styles.css') }}" rel="stylesheet">
 
 </head>
