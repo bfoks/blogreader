@@ -22,6 +22,7 @@ class ManagingBlogsTest extends TestCase
 
         $this->app->instance(Client::class, new FakeWordpress());
         $this->withExceptionHandling();
+//        $this->withoutExceptionHandling();
 
     }
 

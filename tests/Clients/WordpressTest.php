@@ -47,4 +47,41 @@ class WordpressTest extends TestCase
         ]);
     }
 
+    /** @test */
+    public function client_gets_proper_next_post()
+    {
+        $this->withoutExceptionHandling();
+
+        $user = factory(User::class)->create();
+        $this->signIn($user);
+
+        $this->post(route('blogs.store', [
+            'url' => 'https://jakoszczedzacpieniadze.pl'
+        ]));
+
+        tap($user->blogs->first(), function ($blog) {
+
+            $this->assertDatabaseHas('posts', [
+                'local_id' => 77,
+                'title' => 'Budżet domowy &#8211; czyli jak zacząć oszczędzanie pieniędzy',
+            ]);
+
+            $this->get(route('blogs.posts.show', [$blog, $blog->posts->first(), 'next']));
+
+            $this->assertDatabaseHas('posts', [
+                'local_id' => 130,
+                'title' => 'Koszt prądu, wody i ogrzewania &#8211; gotowy kalkulator Excel',
+            ]);
+
+            $this->get(route('blogs.posts.show', [$blog, $blog->posts()->latest('id')->first(), 'next']));
+
+            $this->assertDatabaseHas('posts', [
+                'local_id' => 170,
+                'title' => 'Oszczędzanie wody: ile można zaoszczędzić na prysznicu?',
+            ]);
+
+        });
+
+    }
+
 }

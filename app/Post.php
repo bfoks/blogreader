@@ -13,6 +13,11 @@ class Post extends Model
         return $this->datetime_utc;
     }
 
+    public function getDatetime()
+    {
+        return $this->datetime;
+    }
+
     public function getLink()
     {
         return $this->link;

@@ -56,8 +56,9 @@ class Wordpress implements Client
      */
     public function findNextPostFor(Blog $blog): Post
     {
+        /** @var Post $recentLocalPost */
         $recentLocalPost = $blog->posts()->latest('datetime_utc')->first();
-        $startDate = $this->iso8601($recentLocalPost->getDatetimeUtc());
+        $startDate = $this->iso8601($recentLocalPost->getDatetime());
 
         $fullApiUrl = "{$blog->getUrl()}/wp-json/wp/v2/posts/?orderby=date&order=asc&per_page=1&after={$startDate}";
 
@@ -143,6 +144,7 @@ class Wordpress implements Client
     {
         return new Post([
             'local_id' => $newPostRaw['id'],
+            'datetime' => $newPostRaw['date'],
             'datetime_utc' => $newPostRaw['date_gmt'],
             'link' => $newPostRaw['link'],
             'title' => $newPostRaw['title']['rendered'],

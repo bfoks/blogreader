@@ -18,6 +18,7 @@ class CreatePostsTable extends Migration
             $table->string('title');
             $table->integer('local_id');
             $table->string('link');
+            $table->dateTime('datetime');
             $table->dateTime('datetime_utc');
             $table->unsignedInteger('blog_id');
             $table->timestamps();

@@ -8,6 +8,7 @@ $factory->define(App\Post::class, function (Faker $faker) {
         'title' => $faker->sentence(),
         'local_id' => $faker->randomNumber(),
         'link' => $faker->url,
+        'datetime' => $faker->dateTimeThisDecade(),
         'datetime_utc' => $faker->dateTimeThisDecade(),
         'blog_id' => function() {
             return factory(Blog::class)->create()->id;

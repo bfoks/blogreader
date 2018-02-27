@@ -31,6 +31,7 @@ class FakeWordpress implements Client
             'title' => "First post's title",
             'local_id' => 70,
             'link' => 'https://example.com/first-post/',
+            'datetime' => '2017-12-31T22:00:00',
             'datetime_utc' => '2018-01-01T00:00:00',
             'blog_id' => $blog->id,
         ]);
@@ -48,6 +49,7 @@ class FakeWordpress implements Client
                     'title' => "Second post's title",
                     'local_id' => 80,
                     'link' => 'https://example.com/second-post/',
+                    'datetime' => '2018-01-01T22:00:00',
                     'datetime_utc' => '2018-01-02T00:00:00',
                     'blog_id' => $blog->id,
                 ]);
