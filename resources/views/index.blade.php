@@ -15,33 +15,41 @@
 
     @endphp
 
-    <div id="particles-js"></div>
+    <div style="min-height: calc(100vh - 45px)" class="relative">
 
-    <div class="flex absolute pin-t h-full w-full items-center justify-center">
+        <div id="particles-js"></div>
 
-        <div class="mr-8">
-            <h1 class="text-xl sm:text-3xl m-0 text-center">Twój osobisty manager blogów</h1>
-            <ul style="list-style-type: none" class="mt-8 text-xl">
-                <li class=" mb-6">Wygodna nawigacja między wpisami</li>
-                <li class=" mb-6">Chronologiczna kolejność wpisów</li>
-                <li class=" mb-6">Powiadomienia o nowych wpisach na blogu <sup><span class="soon">wkrótce!</span></sup></li>
-                <li class=" mb-6">Zapisywanie notatek dla dowolnego wpisu <sup><span class="soon">wkrótce!</span></sup></li>
-                <li class=" mb-6">Grupowanie wpisów w zbiory <sup><span class="soon">wkrótce!</span></sup></li>
-                <li class=" mb-6">Obsługa platformy Blogspot <sup><span class="soon">wkrótce!</span></sup></li>
-            </ul>
+        <div class="flex absolute pin-t w-full items-center justify-center min-h-full">
+
+            <div class="mt-8 xl:mt-0 xl:mr-8">
+                <h1 class="text-xl sm:text-3xl m-0 text-center">Twój osobisty manager blogów</h1>
+                <ul style="list-style-type: none" class="mt-8 text-xl">
+                    <li class=" mb-6">Wygodna nawigacja między wpisami</li>
+                    <li class=" mb-6">Chronologiczna kolejność wpisów</li>
+                    <li class=" mb-6">Powiadomienia o nowych wpisach na blogu <sup><span class="soon">wkrótce!</span></sup></li>
+                    <li class=" mb-6">Zapisywanie notatek dla dowolnego wpisu <sup><span class="soon">wkrótce!</span></sup></li>
+                    <li class=" mb-6">Grupowanie wpisów w zbiory <sup><span class="soon">wkrótce!</span></sup></li>
+                    <li class=" mb-6">Obsługa platformy Blogspot <sup><span class="soon">wkrótce!</span></sup></li>
+
+                    {{--<li class=" mb-6">Obsługa platformy Blogspot <sup><span class="soon">wkrótce!</span></sup></li>--}}
+                    {{--<li class=" mb-6">Obsługa platformy Blogspot <sup><span class="soon">wkrótce!</span></sup></li>--}}
+                    {{--<li class=" mb-6">Obsługa platformy Blogspot <sup><span class="soon">wkrótce!</span></sup></li>--}}
+                    {{--<li class=" mb-6">Obsługa platformy Blogspot <sup><span class="soon">wkrótce!</span></sup></li>--}}
+                </ul>
+            </div>
+
+            <div class="mr-8">
+                <video style="max-width: 800px" class="hidden xl:inline-block border border-orange-lightest rounded-sm" autoplay loop>
+                    <source src="{{ $paths[$current]['mp4'] }}" type="video/mp4"/>
+                    Your browser does not support the video tag. I suggest you upgrade your browser.
+                    <source src="{{ $paths[$current]['webm'] }}" type="video/webm"/>
+                    Your browser does not support the video tag. I suggest you upgrade your browser.
+                    {{--<source src="video/smartphone/smartphone.mov"/>--}}
+                    {{--Your browser does not support the video tag. I suggest you upgrade your browser.--}}
+                </video>
+            </div>
+
         </div>
-
-        <div class="mr-8">
-            <video style="max-width: 800px" class="hidden xl:inline-block border border-orange-lightest rounded-sm" autoplay loop>
-                <source src="{{ $paths[$current]['mp4'] }}" type="video/mp4"/>
-                Your browser does not support the video tag. I suggest you upgrade your browser.
-                <source src="{{ $paths[$current]['webm'] }}" type="video/webm"/>
-                Your browser does not support the video tag. I suggest you upgrade your browser.
-                {{--<source src="video/smartphone/smartphone.mov"/>--}}
-                {{--Your browser does not support the video tag. I suggest you upgrade your browser.--}}
-            </video>
-        </div>
-
     </div>
 
     @push('scripts')
