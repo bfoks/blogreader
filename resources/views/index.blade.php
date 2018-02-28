@@ -38,8 +38,8 @@
                 </ul>
             </div>
 
-            <div style="width: 700px" class="mr-8">
-                <video style="width: 700px" class="hidden xl:inline-block border border-orange-lightest rounded-sm" autoplay loop>
+            <div style="width: 700px" class="hidden xl:block mr-8">
+                <video id="footage" width="700" class="hidden xl:inline-block border border-orange-lightest rounded-sm" preload="none">
                     <source src="{{ $paths[$current]['mp4'] }}" type="video/mp4"/>
                     Your browser does not support the video tag. I suggest you upgrade your browser.
                     <source src="{{ $paths[$current]['webm'] }}" type="video/webm"/>
@@ -53,6 +53,28 @@
     </div>
 
     @push('scripts')
+
+        <script>
+
+            window.addEventListener('resize', initFootage);
+
+            function initFootage() {
+
+                var video = document.getElementById('footage');
+                var width = window.innerWidth;
+
+                if (width >= 1200) {
+                    video.removeAttribute('preload');
+                    video.setAttribute('autoplay', true);
+                    video.setAttribute('loop', true);
+                }
+
+            }
+
+            initFootage();
+
+        </script>
+
         <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
 
         <script>
