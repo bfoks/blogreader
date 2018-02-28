@@ -1,6 +1,7 @@
 @tailwind preflight;
 
 a {
+    @apply .text-orange;
     text-decoration: none;
 }
 
