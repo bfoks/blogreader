@@ -19,7 +19,7 @@ a:visited {
 
 
 .btn-primary {
-    @apply .text-white .p-2 .rounded .bg-orange;
+    @apply .text-white .bg-orange;
 }
 
 .btn-primary:hover {

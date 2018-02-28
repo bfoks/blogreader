@@ -44,7 +44,7 @@
     @if(count($blogs))
         <div class="container mx-auto mt-4 text-right">
             <div class="mx-1 mb-4">
-                <a href="{{ route('blogs.create') }}" class="btn-primary">
+                <a href="{{ route('blogs.create') }}" class="btn btn-primary">
                     Dodaj nowy
                 </a>
             </div>

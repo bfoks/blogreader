@@ -14,13 +14,13 @@
                     <a class="btn btn-primary btn-sm" href="{{ route('register') }}">Rejestracja</a>
                     <a class="btn btn-sm" href="{{ route('login') }}">Logowanie</a>
                 @else
-                    <a class="btn btn-primary btn-sm" href="{{ route('blogs.index') }}">Moje blogi</a>
+                    <a class="btn btn-primary btn-sm border-0" href="{{ route('blogs.index') }}">Moje blogi</a>
                     <span>
-                <form class="inline" action="{{ route('logout') }}" method="POST">
-                @csrf
-                    <button type="submit" class="btn btn-sm">Wyloguj</button>
-                </form>
-            </span>
+                        <form class="inline m-0 p-0" action="{{ route('logout') }}" method="POST">
+                        @csrf
+                            <button type="submit" class="btn btn-sm">Wyloguj</button>
+                        </form>
+                    </span>
                 @endguest
             </div>
         </div>
