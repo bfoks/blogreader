@@ -37,7 +37,7 @@ class Wordpress implements Client
 
         try {
 
-            $body = $this->httpClient->download('GET', $fullApiUrl);
+            $body = $this->httpClient->downloadBody('GET', $fullApiUrl);
             $bodyAsArray = $this->jsonDecode($body);
             $firstPostRaw = $this->extractFirstPost($bodyAsArray);
 
@@ -63,7 +63,7 @@ class Wordpress implements Client
         $fullApiUrl = "{$blog->getUrl()}/wp-json/wp/v2/posts/?orderby=date&order=asc&per_page=1&after={$startDate}";
 
         try {
-            $body = $this->httpClient->download('GET', $fullApiUrl);
+            $body = $this->httpClient->downloadBody('GET', $fullApiUrl);
             $bodyAsArray = $this->jsonDecode($body);
             $nextPostRaw = $this->extractFirstPost($bodyAsArray);
 
@@ -86,13 +86,32 @@ class Wordpress implements Client
 
         try {
 
-            $body = $this->httpClient->download('GET', $fullApiUrl);
+            $body = $this->httpClient->downloadBody('GET', $fullApiUrl);
             $bodyAsArray = $this->jsonDecode($body);
 
             return $this->extractBlogName($bodyAsArray);
 
         } catch (\Exception $exception) {
             throw new BlogNameNotFoundException();
+        }
+    }
+
+    public function findTotalPosts(Blog $blog): ?int
+    {
+        $fullApiUrl = "{$blog->getUrl()}/wp-json/wp/v2/posts";
+
+        try {
+
+            $totalPostsHeaderValues = $this->httpClient->downloadHeader('HEAD', $fullApiUrl, 'x-wp-total');
+
+            if (isset($totalPostsHeaderValues[0]) && $totalPostsHeaderValues[0] !== '') {
+                return $totalPostsHeaderValues[0];
+            }
+
+            return null;
+
+        } catch (\Exception $exception) {
+            throw $exception;
         }
     }
 
@@ -166,5 +185,6 @@ class Wordpress implements Client
 
         return $bodyAsArray['name'];
     }
+
 
 }

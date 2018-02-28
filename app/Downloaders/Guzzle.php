@@ -44,12 +44,23 @@ class Guzzle
         'timeout' => 5
     ];
 
-    public function download($method, $url)
+    public function downloadBody($method, $url)
     {
         $client = new Client();
 
         try {
             return (string)$client->request($method, $url, $this->connectionConfig)->getBody();
+        } catch (\Exception $exception) {
+            throw $exception;
+        }
+    }
+
+    public function downloadHeader($method, $url, $headerName)
+    {
+        $client = new Client();
+
+        try {
+            return $client->request($method, $url, $this->connectionConfig)->getHeader($headerName);
         } catch (\Exception $exception) {
             throw $exception;
         }

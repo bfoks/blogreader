@@ -67,4 +67,9 @@ class FakeWordpress implements Client
 
         throw new BlogNameNotFoundException;
     }
+
+    public function findTotalPosts(Blog $blog): ?int
+    {
+        return null;
+    }
 }

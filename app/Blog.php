@@ -29,6 +29,8 @@ class Blog extends Model
     public function initializeAndSave()
     {
         $this->name = $this->client->findBlogName($this);
+        $this->total_posts = $this->client->findTotalPosts($this);
+
         $firstPost = $this->client->findFirstPostFor($this);
 
         $this->save();

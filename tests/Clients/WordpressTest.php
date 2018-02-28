@@ -13,6 +13,22 @@ class WordpressTest extends TestCase
     use DatabaseMigrations;
 
     /** @test */
+    public function blog_gets_name_automatically()
+    {
+        $user = factory(User::class)->create();
+        $this->signIn($user);
+
+        $this->post(route('blogs.store', [
+            'url' => 'https://levels.io'
+        ]));
+
+        $this->assertDatabaseHas('blogs', [
+            'name' => 'levels.io',
+            'url' => 'https://levels.io',
+        ]);
+    }
+
+    /** @test */
     public function first_post_from_blog_is_saved_to_database()
     {
         $user = factory(User::class)->create();
@@ -30,10 +46,11 @@ class WordpressTest extends TestCase
         ]);
 
     }
-
+    
     /** @test */
-    public function blog_gets_name_automatically()
+    public function added_blog_gets_automatically_number_of_total_posts()
     {
+        /** @var User $user */
         $user = factory(User::class)->create();
         $this->signIn($user);
 
@@ -41,12 +58,12 @@ class WordpressTest extends TestCase
             'url' => 'https://levels.io'
         ]));
 
-        $this->assertDatabaseHas('blogs', [
-            'name' => 'levels.io',
-            'url' => 'https://levels.io',
-        ]);
+        /** @var Blog $blog */
+        $blog = $user->blogs->first();
+        $this->assertEquals('https://levels.io', $blog->url);
+        $this->assertGreaterThanOrEqual(232, $blog->total_posts);
     }
-
+    
     /** @test */
     public function client_gets_proper_next_post()
     {

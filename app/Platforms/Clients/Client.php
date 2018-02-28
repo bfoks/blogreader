@@ -12,4 +12,6 @@ interface Client
     public function findNextPostFor(Blog $blog): Post;
 
     public function findBlogName(Blog $blog): string;
+
+    public function findTotalPosts(Blog $blog): ?int;
 }
