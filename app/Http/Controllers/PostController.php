@@ -21,7 +21,7 @@ class PostController extends Controller
 
         $latestBlogPost = $blog->posts()->latest('datetime_utc')->firstOrFail();
 
-        return redirect()->route('blogs.posts.show', [$blog, $latestBlogPost]);
+        return redirect(route('blogs.posts.show', [$blog, $latestBlogPost], false), 302, [], false);
     }
 
     public function show(Blog $blog, Post $post, Request $request)
@@ -33,12 +33,12 @@ class PostController extends Controller
             $previousPost = $post->getPreviousPost();
 
             if (is_null($previousPost)) {
-                return redirect()->route('blogs.posts.show', [$blog, $post])
+                return redirect(route('blogs.posts.show', [$blog, $post], false), 302, [], false)
                     ->with('flash_message', 'Brak wcześniejszych wpisów.')
                     ->with('hide_back_button', true);
             }
 
-            return redirect()->route('blogs.posts.show', [$blog, $previousPost]);
+            return redirect(route('blogs.posts.show', [$blog, $previousPost], false), 302, [], false);
         }
 
         if ($request->has('next')) {
@@ -47,11 +47,11 @@ class PostController extends Controller
                 /** @var Post $nextPost */
                 $nextPost = $post->getNextPost();
 
-                return redirect()->route('blogs.posts.show', [$blog, $nextPost]);
+                return redirect(route('blogs.posts.show', [$blog, $nextPost], false), 302, [], false);
 
             } catch (NextPostNotFoundException $exception) {
 
-                return redirect()->route('blogs.posts.show', [$blog, $post])
+                return redirect(route('blogs.posts.show', [$blog, $post], false), 302, [], false)
                     ->with('flash_message', 'Brak nowszych wpisów.')
                     ->with('hide_next_button', true);
 

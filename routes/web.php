@@ -12,8 +12,7 @@
 */
 
 //Route::get('/test', function () {
-//    $date = DateTime::createFromFormat("Y-m-d\TH:i:s", '2018-02-13T23:33:20', (new DateTimeZone('UTC')));
-//    var_dump($date->getTimestamp());
+//
 //});
 
 //Auth::routes();

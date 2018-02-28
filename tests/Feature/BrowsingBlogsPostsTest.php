@@ -9,6 +9,7 @@ use App\Post;
 use App\User;
 use function foo\func;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
+use Illuminate\Support\Facades\URL;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
@@ -20,7 +21,7 @@ class BrowsingBlogsPostsTest extends TestCase
     {
         parent::setUp();
 
-        $this->withoutExceptionHandling();
+        URL::forceScheme('http');
 
         $this->app->instance(Client::class, new FakeWordpress());
     }

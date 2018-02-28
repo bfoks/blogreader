@@ -20,7 +20,7 @@
 
             @if (!session('hide_back_button'))
                 <a class="btn btn-sm border-0"
-                   href="{{ route('blogs.posts.show', [$post->blog, $post, 'prev']) }}">Wstecz</a>
+                   href="{{ url(route('blogs.posts.show', [$post->blog, $post, 'prev'], false), [], false) }}">Wstecz</a>
             @endif
 
             @if (session('flash_message'))
@@ -29,7 +29,7 @@
 
             @if (!session('hide_next_button'))
                 <a class="btn btn-primary btn-sm"
-                   href="{{ route('blogs.posts.show', [$post->blog, $post, 'next']) }}">Dalej</a>
+                   href="{{ url(route('blogs.posts.show', [$post->blog, $post, 'next'], false), [], false) }}">Dalej</a>
             @endif
 
         </div>
