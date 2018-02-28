@@ -8,17 +8,31 @@
     <style>
         html, body {
             height: 100%;
+            min-height: 100%;
+            font-family: 'Nunito', sans-serif;
+        }
+
+        * {
+            /*outline: 1px solid red;*/
         }
     </style>
+
+    @stack('styles')
+
+    <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
 
     <link href="{{ asset('css/styles.css') }}" rel="stylesheet">
 
 </head>
 
-<body class="font-sans bg-grey-lighter">
+<body class="bg-grey-lightest">
+
     @yield('body')
 
     <script src="{{ asset('js/app.js') }}"></script>
+
+    @stack('scripts')
+
 </body>
 
 </html>

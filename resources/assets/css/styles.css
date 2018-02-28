@@ -5,24 +5,25 @@ a {
 }
 
 a:visited {
-    @apply .text-indigo;
+    @apply .text-orange;
 }
 
+
 .btn {
-    @apply .border .border-indigo .text-indigo .p-2 .rounded-sm .bg-transparent;
+    @apply .border .border-orange .text-orange .p-2 .rounded-sm .bg-transparent;
 }
 
 .btn:hover {
-    @apply .border-indigo-darker .text-indigo-darker;
+    @apply .border-orange-darker .text-orange-darker;
 }
 
 
 .btn-primary {
-    @apply .text-white .p-2 .rounded .bg-indigo;
+    @apply .text-white .p-2 .rounded .bg-orange;
 }
 
 .btn-primary:hover {
-    @apply .bg-indigo-dark .border-indigo-dark .text-white;
+    @apply .bg-orange-dark .border-orange-dark .text-white;
 }
 
 .btn-primary:visited {
@@ -30,7 +31,7 @@ a:visited {
 }
 
 .btn-primary:disabled {
-    @apply .bg-indigo-lighter .border-indigo-lighter .text-grey-light .cursor-not-allowed;
+    @apply .bg-orange-lighter .border-orange-lighter .text-grey-light .cursor-not-allowed;
 }
 
 
@@ -42,12 +43,12 @@ a:visited {
     display: inline-block;
 }
 
-// Hat-tip to Bulma.
-   .loader {
-       color: transparent !important;
-       pointer-events: none;
-       position: relative;
-   }
+
+.loader {
+   color: transparent !important;
+   pointer-events: none;
+   position: relative;
+}
 
 .loader:after {
     animation: spinAround 500ms infinite linear;
@@ -75,6 +76,11 @@ a:visited {
         -webkit-transform: rotate(359deg);
         transform: rotate(359deg);
     }
+}
+
+
+.soon {
+    @apply .border .border-orange .text-orange .text-xs .px-1 .mb-1  .rounded;
 }
 
 @tailwind utilities;
