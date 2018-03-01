@@ -11,7 +11,7 @@ a:visited {
 
 
 .btn {
-    @apply .border .border-orange .text-orange .p-2 .rounded-sm .bg-transparent;
+    @apply .border .border-orange .text-orange .p-2 .rounded .bg-transparent;
 }
 
 .btn:hover {
