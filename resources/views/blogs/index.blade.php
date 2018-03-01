@@ -15,13 +15,13 @@
             @forelse($blogs as $blog)
 
                 <div class="blog-entity flex justify-between text-center items-center bg-white hover:bg-grey-lightest hover:text-orange-light relative py-1">
-                    <div class="w-2/5 lg:w-1/5 text-grey-darkest font-mono">
+                    <div class="w-2/5 lg:w-1/5 text-grey-darker font-mono">
                         <div class="w-24 text-left mx-auto"><span class="text-4xl">{{ $blog->posts()->count() }}</span><span>/{{ $blog->total_posts ?? '?' }}</span></div>
                     </div>
-                    <div class="w-3/5 lg:w-2/5 text-grey-darkest text-xl text-left">
+                    <div class="w-3/5 lg:w-2/5 text-xl text-left">
                         <a href="{{ route('blogs.posts.index', [$blog]) }}">{{ $blog->name }}</a>
                     </div>
-                    <div class="hidden lg:block lg:w-2/5 text-grey-darkest text-left font-mono truncate">
+                    <div class="hidden lg:block lg:w-2/5 text-grey-dark text-left font-mono truncate">
                         <span>{{ $blog->url }}</span>
                         <span class="delete hidden absolute pin-r pr-6">
                         <form action="{{ route('blogs.destroy', [$blog]) }}" method="POST">
