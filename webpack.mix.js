@@ -12,10 +12,11 @@ let tailwindcss = require('tailwindcss');
  |
  */
 
-mix.js('resources/assets/js/app.js', 'public/js')
-   .postCss('resources/assets/css/styles.css', 'public/css', [
-       tailwindcss('./tailwind.js'),
-   ]);
+mix.js('resources/assets/js/app.js', 'public/js').version();
+
+mix.postCss('resources/assets/css/styles.css', 'public/css', [
+    tailwindcss('./tailwind.js')
+]);
 
 
 mix.browserSync('blogreader-laravel.test');
