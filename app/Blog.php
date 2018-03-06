@@ -2,8 +2,8 @@
 
 namespace App;
 
-use App\Platforms\Clients\FakeWordpress;
-use App\Platforms\Clients\Wordpress;
+use App\Platforms\Clients\FakeWP;
+use App\Platforms\Clients\SelfHostedWP;
 use App\Platforms\Clients\Client;
 use Illuminate\Database\Eloquent\Model;
 
@@ -11,7 +11,7 @@ class Blog extends Model
 {
     protected $guarded = [];
 
-    /** @var Wordpress|FakeWordpress|Client client */
+    /** @var SelfHostedWP|FakeWP|Client client */
     protected $client;
 
     public function __construct(array $attributes = [])

@@ -4,7 +4,7 @@ namespace Tests\Feature;
 
 use App\Blog;
 use App\Platforms\Clients\Client;
-use App\Platforms\Clients\FakeWordpress;
+use App\Platforms\Clients\FakeWP;
 use App\Post;
 use App\User;
 use function foo\func;
@@ -23,7 +23,7 @@ class BrowsingBlogsPostsTest extends TestCase
 
         URL::forceScheme('http');
 
-        $this->app->instance(Client::class, new FakeWordpress());
+        $this->app->instance(Client::class, new FakeWP());
     }
 
     /** @test */

@@ -4,7 +4,7 @@ namespace Tests\Feature;
 
 use App\Blog;
 use App\Platforms\Clients\Client;
-use App\Platforms\Clients\FakeWordpress;
+use App\Platforms\Clients\FakeWP;
 use App\Post;
 use App\User;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
@@ -20,7 +20,7 @@ class ManagingBlogsTest extends TestCase
     {
         parent::setUp();
 
-        $this->app->instance(Client::class, new FakeWordpress());
+        $this->app->instance(Client::class, new FakeWP());
         $this->withExceptionHandling();
 //        $this->withoutExceptionHandling();
 
@@ -109,7 +109,7 @@ class ManagingBlogsTest extends TestCase
     /** @test */
     public function if_client_can_t_get_blog_name_user_gets_error_and_blog_is_not_added()
     {
-        $this->app->instance(Client::class, new FakeWordpress([
+        $this->app->instance(Client::class, new FakeWP([
             'findBlogName' => false
         ]));
 
@@ -127,7 +127,7 @@ class ManagingBlogsTest extends TestCase
     /** @test */
     public function if_url_points_to_valid_blog_but_blog_has_not_any_posts_then_blog_is_not_added()
     {
-        $this->app->instance(Client::class, new FakeWordpress([
+        $this->app->instance(Client::class, new FakeWP([
             'findFirstPost' => false
         ]));
 

@@ -3,7 +3,7 @@
 namespace App\Providers;
 
 use App\Platforms\Clients\Client;
-use App\Platforms\Clients\Wordpress;
+use App\Platforms\Clients\SelfHostedWP;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\ServiceProvider;
 
@@ -28,6 +28,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->instance(Client::class, new Wordpress);
+        $this->app->instance(Client::class, new SelfHostedWP);
     }
 }

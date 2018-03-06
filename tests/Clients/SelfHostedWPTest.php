@@ -7,7 +7,7 @@ use App\User;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Tests\TestCase;
 
-class WordpressTest extends TestCase
+class SelfHostedWPTest extends TestCase
 {
 
     use DatabaseMigrations;
