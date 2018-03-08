@@ -3,8 +3,9 @@
 namespace Tests\Feature;
 
 use App\Blog;
-use App\Platforms\Clients\Client;
 use App\Platforms\Clients\FakeWP;
+use App\Platforms\ClientsProvider;
+use App\Platforms\FakeClientsProvider;
 use App\Post;
 use App\User;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
@@ -20,7 +21,7 @@ class ManagingBlogsTest extends TestCase
     {
         parent::setUp();
 
-        $this->app->instance(Client::class, new FakeWP());
+        $this->app->instance(ClientsProvider::class, new FakeClientsProvider());
         $this->withExceptionHandling();
 //        $this->withoutExceptionHandling();
 
@@ -109,9 +110,10 @@ class ManagingBlogsTest extends TestCase
     /** @test */
     public function if_client_can_t_get_blog_name_user_gets_error_and_blog_is_not_added()
     {
-        $this->app->instance(Client::class, new FakeWP([
-            'findBlogName' => false
+        $this->app->instance(FakeWP::class, new FakeWP([
+            'findBlogName' => false,
         ]));
+        $this->app->instance(ClientsProvider::class, new FakeClientsProvider());
 
         $user = factory(User::class)->create();
         $this->signIn($user);
@@ -127,9 +129,10 @@ class ManagingBlogsTest extends TestCase
     /** @test */
     public function if_url_points_to_valid_blog_but_blog_has_not_any_posts_then_blog_is_not_added()
     {
-        $this->app->instance(Client::class, new FakeWP([
+        $this->app->instance(FakeWP::class, new FakeWP([
             'findFirstPost' => false
         ]));
+        $this->app->instance(ClientsProvider::class, new FakeClientsProvider());
 
         $user = factory(User::class)->create();
         $this->signIn($user);
@@ -150,6 +153,22 @@ class ManagingBlogsTest extends TestCase
         $this->post(route('blogs.store'), [
             'url' => 'http://www.example.com',
         ])->assertRedirect(route('blogs.posts.index', [Blog::first()]));
+    }
+
+    /** @test */
+    public function added_blog_contains_key_which_define_blog_platform()
+    {
+        $user = factory(User::class)->create();
+        $this->signIn($user);
+
+        $this->post(route('blogs.store', [
+            'url' => 'https://example.com'
+        ]));
+
+        $this->assertDatabaseHas('blogs', [
+            'url' => 'https://example.com',
+            'platform_name' => 'WP_FAKE',
+        ]);
     }
 
     /* Index */

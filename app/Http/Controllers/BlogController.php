@@ -3,8 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Blog;
+use App\Platforms\Clients\Client;
+use App\Platforms\Discoverer;
 use App\Platforms\Exceptions\BlogNameNotFoundException;
 use App\Platforms\Exceptions\FirstPostNotFoundException;
+use App\Platforms\Exceptions\UnknownPlatformException;
 use Illuminate\Http\Request;
 
 class BlogController extends Controller
@@ -43,11 +46,17 @@ class BlogController extends Controller
                 'user_id' => auth()->user()->id
             ]);
 
+            $discoverer = new Discoverer();
+
+            /** @var Client $client */
+            $client = $discoverer->discoverClientForBlog($blog);
+            $blog->setClient($client);
+
             $blog->initializeAndSave();
 
             return redirect()->route('blogs.posts.index', [$blog]);
 
-        } catch (BlogNameNotFoundException $exception) {
+        } catch (UnknownPlatformException $exception) {
             return redirect()->back()->with('flash_message', 'Nieobsługiwany blog ( ͡° ʖ̯ ͡°)');
         } catch (FirstPostNotFoundException $exception) {
             return redirect()->back()->with('flash_message', 'Podany blog nie posiada żadnych wpisów.');

@@ -1,13 +1,6 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: fx
- * Date: 15.02.18
- * Time: 17:40
- */
 
 namespace App\Platforms\Clients;
-
 
 use App\Blog;
 use App\Downloaders\Guzzle;
@@ -16,7 +9,7 @@ use App\Platforms\Exceptions\FirstPostNotFoundException;
 use App\Platforms\Exceptions\NextPostNotFoundException;
 use App\Post;
 
-class SelfHostedWP extends Client
+class GlobalWP extends Client
 {
     /** @var Guzzle */
     protected $httpClient;
@@ -33,7 +26,11 @@ class SelfHostedWP extends Client
      */
     public function findFirstPostFor(Blog $blog): Post
     {
-        $fullApiUrl = "{$blog->getUrl()}/wp-json/wp/v2/posts/?orderby=date&order=asc&per_page=1";
+        if (!$blogDomain = parse_url($blog->getUrl(), PHP_URL_HOST)) {
+            throw new \Exception();
+        }
+
+        $fullApiUrl = "https://public-api.wordpress.com/wp/v2/sites/{$blogDomain}/posts/?orderby=date&order=asc&per_page=1";
 
         try {
 
@@ -56,11 +53,15 @@ class SelfHostedWP extends Client
      */
     public function findNextPostFor(Blog $blog): Post
     {
+        if (!$blogDomain = parse_url($blog->getUrl(), PHP_URL_HOST)) {
+            throw new \Exception();
+        }
+
         /** @var Post $recentLocalPost */
         $recentLocalPost = $blog->posts()->latest('datetime_utc')->first();
         $startDate = $this->iso8601($recentLocalPost->getDatetime());
 
-        $fullApiUrl = "{$blog->getUrl()}/wp-json/wp/v2/posts/?orderby=date&order=asc&per_page=1&after={$startDate}";
+        $fullApiUrl = "https://public-api.wordpress.com/wp/v2/sites/{$blogDomain}/posts/?orderby=date&order=asc&per_page=1&after={$startDate}";
 
         try {
             $body = $this->httpClient->downloadBody('GET', $fullApiUrl);
@@ -82,7 +83,11 @@ class SelfHostedWP extends Client
      */
     public function findBlogName(Blog $blog): string
     {
-        $fullApiUrl = "{$blog->getUrl()}/wp-json";
+        if (!$blogDomain = parse_url($blog->getUrl(), PHP_URL_HOST)) {
+            throw new \Exception();
+        }
+
+        $fullApiUrl = "https://public-api.wordpress.com/rest/v1.2/sites/{$blogDomain}/";
 
         try {
 
@@ -94,11 +99,16 @@ class SelfHostedWP extends Client
         } catch (\Exception $exception) {
             throw new BlogNameNotFoundException();
         }
+
     }
 
     public function findTotalPosts(Blog $blog): ?int
     {
-        $fullApiUrl = "{$blog->getUrl()}/wp-json/wp/v2/posts";
+        if (!$blogDomain = parse_url($blog->getUrl(), PHP_URL_HOST)) {
+            throw new \Exception();
+        }
+
+        $fullApiUrl = "https://public-api.wordpress.com/wp/v2/sites/{$blogDomain}/posts";
 
         try {
 
@@ -113,6 +123,7 @@ class SelfHostedWP extends Client
         } catch (\Exception $exception) {
             throw $exception;
         }
+
     }
 
     /**
@@ -185,5 +196,6 @@ class SelfHostedWP extends Client
 
         return $bodyAsArray['name'];
     }
+
 
 }
