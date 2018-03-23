@@ -16,7 +16,7 @@ use App\Platforms\Exceptions\FirstPostNotFoundException;
 use App\Platforms\Exceptions\NextPostNotFoundException;
 use App\Post;
 
-class Wordpress implements Client
+class SelfHostedWP extends Client
 {
     /** @var Guzzle */
     protected $httpClient;
@@ -185,6 +185,5 @@ class Wordpress implements Client
 
         return $bodyAsArray['name'];
     }
-
 
 }

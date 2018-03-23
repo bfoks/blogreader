@@ -3,15 +3,27 @@
 namespace App\Platforms\Clients;
 
 use App\Blog;
+use App\Platforms\ClientsProvider;
 use App\Post;
 
-interface Client
+abstract class Client
 {
-    public function findFirstPostFor(Blog $blog): Post;
+    public abstract function findFirstPostFor(Blog $blog): Post;
 
-    public function findNextPostFor(Blog $blog): Post;
+    public abstract function findNextPostFor(Blog $blog): Post;
 
-    public function findBlogName(Blog $blog): string;
+    /**
+     * @param Blog $blog
+     * @return string
+     * @throws BlogNameNotFoundException
+     */
+    public abstract function findBlogName(Blog $blog): string;
 
-    public function findTotalPosts(Blog $blog): ?int;
+    public abstract function findTotalPosts(Blog $blog): ?int;
+
+    public function getClientName(): string
+    {
+        $clientsProvider = app()->make(ClientsProvider::class);
+        return $clientsProvider->getClientKeyByClass($this);
+    }
 }

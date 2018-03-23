@@ -9,7 +9,7 @@ use App\Platforms\Exceptions\FirstPostNotFoundException;
 use App\Platforms\Exceptions\NextPostNotFoundException;
 use App\Post;
 
-class FakeWordpress implements Client
+class FakeWP extends Client
 {
     protected $config = [
         'findBlogName' => true,

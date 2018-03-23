@@ -3,11 +3,10 @@
 namespace Tests\Feature;
 
 use App\Blog;
-use App\Platforms\Clients\Client;
-use App\Platforms\Clients\FakeWordpress;
+use App\Platforms\ClientsProvider;
+use App\Platforms\FakeClientsProvider;
 use App\Post;
 use App\User;
-use function foo\func;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Support\Facades\URL;
 use Tests\TestCase;
@@ -22,8 +21,10 @@ class BrowsingBlogsPostsTest extends TestCase
         parent::setUp();
 
         URL::forceScheme('http');
+        $this->app->instance(ClientsProvider::class, new FakeClientsProvider());
 
-        $this->app->instance(Client::class, new FakeWordpress());
+        $this->withoutExceptionHandling();
+
     }
 
     /** @test */
@@ -162,5 +163,39 @@ class BrowsingBlogsPostsTest extends TestCase
             ->assertViewHas('post', function ($post) use ($blogPostB) {
                 return $post->id === $blogPostB->id;
             });
+    }
+
+    /** @test */
+    public function next_blog_posts_is_properly_saved_if_exists_on_blog()
+    {
+        $user = factory(User::class)->create();
+        $this->signIn($user);
+
+        $blogData = [
+            'url' => 'http://example.com'
+        ];
+
+        $this->post(route('blogs.store'), $blogData);
+
+        tap($user->fresh()->blogs->first(), function ($blog) {
+
+            $post = $blog->posts->first();
+
+            $this->assertEquals("First post's title", $post->title);
+            $this->assertEquals(70, $post->local_id);
+            $this->assertEquals('https://example.com/first-post/', $post->link);
+
+            $this->get(route('blogs.posts.show', [$blog, $post, 'next']));
+
+            tap($blog->fresh()->posts()->latest('datetime_utc')->first(), function ($post) {
+
+                $this->assertEquals("Second post's title", $post->title);
+                $this->assertEquals(80, $post->local_id);
+                $this->assertEquals('https://example.com/second-post/', $post->link);
+
+            });
+
+        });
+
     }
 }

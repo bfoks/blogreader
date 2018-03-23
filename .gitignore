@@ -4,6 +4,8 @@
 /public/css/*
 /public/js/*
 /public/mix-manifest.json
+/public/video/*
+!/public/video/relax
 /storage/*.key
 /vendor
 /.idea
