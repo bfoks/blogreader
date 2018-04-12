@@ -6,27 +6,34 @@ use App\Blog;
 use App\Platforms\Clients\Client;
 use App\Platforms\Exceptions\NextPostNotFoundException;
 use App\Post;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\DB;
 
 class PostController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('auth')->only(['index', 'show']);
-    }
 
     public function index(Blog $blog, Request $request)
     {
-        $this->authorize('view', $blog);
+        $blog = $blog->load('posts');
 
-        $latestBlogPost = $blog->posts()->latest('datetime_utc')->firstOrFail();
+        /** @var Collection $usersReadPosts */
+        $usersReadPosts = collect([]);
 
-        return redirect(route('blogs.posts.show', [$blog, $latestBlogPost], false), 302, [], false);
+        if (auth()->user()) {
+            $usersReadPosts = DB::table('posts')
+                ->join('users_read_posts', 'posts.id', '=', 'users_read_posts.post_id')
+                ->where('posts.blog_id', '=', $blog->id)
+                ->where('users_read_posts.user_id', '=', auth()->user()->id)
+                ->pluck('posts.id');
+        }
+
+        return view('blogs.posts.index', ['blog' => $blog, 'usersReadPosts' => $usersReadPosts]);
     }
 
     public function show(Blog $blog, Post $post, Request $request)
     {
-        $this->authorize('view', $post);
 
         if ($request->has('prev')) {
             /** @var Post $previousPost */
@@ -57,6 +64,11 @@ class PostController extends Controller
 
             }
 
+        }
+
+        //TODO: write a test
+        if (auth()->user()) {
+            auth()->user()->posts()->syncWithoutDetaching($post);
         }
 
         return view('blogs.posts.show')->with('post', $post);

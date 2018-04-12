@@ -10,11 +10,16 @@ namespace App\Platforms\Clients;
 
 
 use App\Blog;
+use App\BlogIndexingProgress;
 use App\Downloaders\Guzzle;
+use App\Events\BlogIndexingProgressUpdated;
+use App\Platforms\Exceptions\BlogHasNoPostsException;
 use App\Platforms\Exceptions\BlogNameNotFoundException;
 use App\Platforms\Exceptions\FirstPostNotFoundException;
 use App\Platforms\Exceptions\NextPostNotFoundException;
 use App\Post;
+use Illuminate\Support\Collection;
+use Psr\Http\Message\ResponseInterface;
 
 class SelfHostedWP extends Client
 {
@@ -105,6 +110,11 @@ class SelfHostedWP extends Client
             $totalPostsHeaderValues = $this->httpClient->downloadHeader('HEAD', $fullApiUrl, 'x-wp-total');
 
             if (isset($totalPostsHeaderValues[0]) && $totalPostsHeaderValues[0] !== '') {
+
+                if ($totalPostsHeaderValues[0] == 0) {
+                    throw new BlogHasNoPostsException;
+                }
+
                 return $totalPostsHeaderValues[0];
             }
 
@@ -114,6 +124,62 @@ class SelfHostedWP extends Client
             throw $exception;
         }
     }
+
+    public function findAllPosts(Blog $blog): ?Collection
+    {
+        $apiUrl = "{$blog->getUrl()}/wp-json/wp/v2/posts";
+
+        $allBlogPosts = [];
+
+        try {
+
+            $page = 1;
+            $nextPageExists = true;
+            $PER_PAGE = 50;
+            $SLEEP_FOR_N_SECONDS = 1;
+
+            while ($nextPageExists) {
+
+                $fullApiUrl = $apiUrl . '?' . http_build_query(['per_page' => $PER_PAGE, 'page' => $page]);
+
+                /** @var ResponseInterface $onePageOfPostsResponse */
+                $onePageOfPostsResponse = $this->httpClient->download('GET', $fullApiUrl);
+                $bodyAsArray = $this->jsonDecode($onePageOfPostsResponse->getBody()->__toString());
+
+                /** @var array $allBlogPosts */
+                $allBlogPosts = array_merge($allBlogPosts, $bodyAsArray);
+
+                if (!isset($onePageOfPostsResponse->getHeader('link')[0])) {
+                    throw new \Exception('NO LINK HEADER');
+                }
+
+                /** @var string $linkHeader */
+                $linkHeader = $onePageOfPostsResponse->getHeader('link')[0];
+
+                if (strpos($linkHeader, 'rel="next"') === false) {
+                    $nextPageExists = false;
+                } else {
+                    $page++;
+                    sleep($SLEEP_FOR_N_SECONDS);
+                }
+
+                // TODO:: test & others clients implementation
+                BlogIndexingProgressUpdated::dispatch(new BlogIndexingProgress(count($allBlogPosts), $blog->getTotalPosts()));
+
+            }
+
+            return collect($allBlogPosts)->transform(function ($item, $key) use ($blog) {
+                return $this->makeNewPost($blog, $item);
+            });
+
+
+        } catch (\Exception $exception) {
+            throw $exception;
+        }
+
+
+    }
+
 
     /**
      * @param string $datetime
@@ -166,7 +232,7 @@ class SelfHostedWP extends Client
             'datetime' => $newPostRaw['date'],
             'datetime_utc' => $newPostRaw['date_gmt'],
             'link' => $newPostRaw['link'],
-            'title' => $newPostRaw['title']['rendered'],
+            'title' => html_entity_decode($newPostRaw['title']['rendered']),
 
             'blog_id' => $blog->id
         ]);

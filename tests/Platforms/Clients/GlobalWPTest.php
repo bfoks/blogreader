@@ -95,17 +95,30 @@ class GlobalWPTest extends TestCase
 
             $this->assertDatabaseHas('posts', [
                 'local_id' => 16,
-                'title' => 'Wielkość Kwejka czyli jak zarabiać na śmiesznych obrazkach&#8230;.',
+                'title' => 'Wielkość Kwejka czyli jak zarabiać na śmiesznych obrazkach….',
             ]);
 
             $this->get(route('blogs.posts.show', [$blog, $blog->posts()->latest('id')->first(), 'next']));
 
             $this->assertDatabaseHas('posts', [
                 'local_id' => 21,
-                'title' => 'Zaskocz klientów i Partnera prostym&nbsp;filmikiem',
+                'title' => 'Zaskocz klientów i Partnera prostym filmikiem',
             ]);
 
         });
+
+    }
+
+    /** @test */
+    public function all_blogs_posts_are_saved_to_database_after_adding_a_blog()
+    {
+        $this->post(route('blogs.store', [
+            'url' => 'https://nevenmaguireblog.com'
+        ]));
+
+        $blog = Blog::first();
+
+        $this->assertGreaterThanOrEqual(140, $blog->posts->count());
 
     }
 

@@ -19,7 +19,7 @@ class BlogPolicy
      */
     public function view(User $user, Blog $blog)
     {
-        return $user->id === $blog->user_id;
+        //
     }
 
     /**
@@ -54,6 +54,6 @@ class BlogPolicy
      */
     public function delete(User $user, Blog $blog)
     {
-        return $user->id === $blog->user_id;
+        //
     }
 }

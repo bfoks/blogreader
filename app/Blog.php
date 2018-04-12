@@ -31,10 +31,10 @@ class Blog extends Model
         $this->total_posts = $this->client->findTotalPosts($this);
         $this->platform_name = $this->client->getClientName();
 
-        $firstPost = $this->client->findFirstPostFor($this);
+        $allPosts = $this->client->findAllPosts($this);
 
         $this->save();
-        $this->posts()->save($firstPost);
+        $this->posts()->saveMany($allPosts);
 
         return $this;
     }
@@ -51,9 +51,14 @@ class Blog extends Model
         return $post;
     }
 
+    public function getTotalPosts()
+    {
+        return $this->total_posts;
+    }
+
     public function posts()
     {
-        return $this->hasMany(Post::class);
+        return $this->hasMany(Post::class); // ->orderBy('datetime_utc');
     }
 
 }

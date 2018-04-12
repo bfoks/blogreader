@@ -13,7 +13,7 @@
         <p class="hidden sm:block sm:w-3/5 font-sans tracking-wide text-center">
             <a href="{{ route('blogs.index') }}">Moje blogi</a>
             &raquo;
-            <span class="">{{ $post->blog->name }}</span>
+            <a href="{{ route('blogs.posts.index', [$post->blog]) }}#{{ $post->id }}">{{ $post->blog->name }}</a>
         </p>
 
         <div class="sm:w-1/5 text-right">

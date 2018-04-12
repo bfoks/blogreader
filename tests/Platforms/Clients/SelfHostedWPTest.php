@@ -56,7 +56,7 @@ class SelfHostedWPTest extends TestCase
         ]);
 
     }
-    
+
     /** @test */
     public function added_blog_gets_automatically_number_of_total_posts()
     {
@@ -73,7 +73,7 @@ class SelfHostedWPTest extends TestCase
         $this->assertEquals('https://levels.io', $blog->url);
         $this->assertGreaterThanOrEqual(232, $blog->total_posts);
     }
-    
+
     /** @test */
     public function client_gets_proper_next_post()
     {
@@ -90,14 +90,14 @@ class SelfHostedWPTest extends TestCase
 
             $this->assertDatabaseHas('posts', [
                 'local_id' => 77,
-                'title' => 'Budżet domowy &#8211; czyli jak zacząć oszczędzanie pieniędzy',
+                'title' => 'Budżet domowy – czyli jak zacząć oszczędzanie pieniędzy',
             ]);
 
             $this->get(route('blogs.posts.show', [$blog, $blog->posts->first(), 'next']));
 
             $this->assertDatabaseHas('posts', [
                 'local_id' => 130,
-                'title' => 'Koszt prądu, wody i ogrzewania &#8211; gotowy kalkulator Excel',
+                'title' => 'Koszt prądu, wody i ogrzewania – gotowy kalkulator Excel',
             ]);
 
             $this->get(route('blogs.posts.show', [$blog, $blog->posts()->latest('id')->first(), 'next']));
@@ -109,6 +109,34 @@ class SelfHostedWPTest extends TestCase
 
         });
 
+    }
+
+    //TODO:: testy dla innych platform
+
+    /** @test */
+    public function all_blogs_posts_are_saved_to_database_after_adding_a_blog()
+    {
+        $this->post(route('blogs.store', [
+            'url' => 'http://fashionmugging.com'
+        ]));
+
+        $blog = Blog::first();
+
+        $this->assertGreaterThanOrEqual(232, $blog->posts->count());
+
+    }
+
+    // TODO:: testy dla innych platform
+
+    /** @test */
+    public function if_url_points_to_valid_blog_but_blog_has_not_any_posts_then_blog_is_not_added()
+    {
+        $this->post(route('blogs.store'), [
+            'url' => 'https://karboosx.net/'
+        ])
+            ->assertSessionHas('flash_message', 'Podany blog nie posiada żadnych wpisów.');
+
+        $this->assertEmpty(Blog::all());
     }
 
 }

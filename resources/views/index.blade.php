@@ -2,78 +2,36 @@
 
 @section('content')
 
-    @php
-        $paths = [
-            'relax' => ['mp4' => 'video/relax/Mp4/Relaxation.mp4', 'webm' => 'video/relax/Webm/Relaxation.webm'],
-            'hey' => ['mp4' => 'video/hey/MP4/Hey-World.mp4', 'webm' => 'video/hey/WEBM/Hey-World.webm'],
-            'work' => ['mp4' => 'video/work/Workaholic.mp4', 'webm' => 'video/work/Workaholic.webm'],
-            'vacy' => ['mp4' => 'video/vacay/Vacay_Mode.mp4', 'webm' => 'video/vacay/Vacay_Mode.webm'],
-            'magazine' => ['mp4' => 'video/magazine/MP4/Magazine.mp4', 'webm' => 'video/magazine/Webm/Magazine.webm'],
-        ];
-
-    $current = 'relax'; // (array_keys($paths)[rand(0, (count(array_keys($paths)) - 1))]);
-
-    @endphp
-
     <div style="min-height: calc(100vh - 45px)" class="relative">
 
         <div id="particles-js"></div>
 
-        <div class="flex absolute pin-t w-full items-center justify-center min-h-full">
+        <div class="flex flex-wrap absolute pin-t w-full items-center justify-center min-h-full">
 
-            <div class="mt-8 xl:mt-0 xl:mr-8">
+            <div class="px-1">
+
                 <h1 class="text-xl sm:text-3xl m-0 text-center">Twój osobisty manager blogów</h1>
-                <ul style="list-style-type: none" class="mt-8 text-xl">
-                    <li class=" mb-6">Wygodna nawigacja między wpisami</li>
-                    <li class=" mb-6">Chronologiczna kolejność wpisów</li>
-                    <li class=" mb-6">Powiadomienia o nowych wpisach na blogu <sup><span class="soon">wkrótce!</span></sup></li>
-                    <li class=" mb-6">Zapisywanie notatek dla dowolnego wpisu <sup><span class="soon">wkrótce!</span></sup></li>
-                    <li class=" mb-6">Grupowanie wpisów w zbiory <sup><span class="soon">wkrótce!</span></sup></li>
-                    <li class=" mb-6">Obsługa platformy Blogspot <sup><span class="soon">wkrótce!</span></sup></li>
 
-                    {{--<li class=" mb-6">Obsługa platformy Blogspot <sup><span class="soon">wkrótce!</span></sup></li>--}}
-                    {{--<li class=" mb-6">Obsługa platformy Blogspot <sup><span class="soon">wkrótce!</span></sup></li>--}}
-                    {{--<li class=" mb-6">Obsługa platformy Blogspot <sup><span class="soon">wkrótce!</span></sup></li>--}}
-                    {{--<li class=" mb-6">Obsługa platformy Blogspot <sup><span class="soon">wkrótce!</span></sup></li>--}}
+                <ul style="list-style-type: none" class="mt-8 text-xl">
+                    <li class="mb-6">Wygodna nawigacja między wpisami</li>
+                    <li class="mb-6">Chronologiczna kolejność wpisów</li>
+                    <li class="mb-6">Powiadomienia o nowych wpisach na blogu <sup><span class="soon">wkrótce!</span></sup></li>
+                    <li class="mb-6">Zapisywanie notatek dla dowolnego wpisu <sup><span class="soon">wkrótce!</span></sup></li>
+                    <li class="mb-6">Grupowanie wpisów w zbiory <sup><span class="soon">wkrótce!</span></sup></li>
+                    <li class="mb-6">Obsługa platformy Blogspot <sup><span class="soon">wkrótce!</span></sup></li>
                 </ul>
+
             </div>
 
-            <div style="width: 700px" class="hidden xl:block mr-8">
-                <video id="footage" width="700" class="hidden xl:inline-block border border-orange-lightest rounded-sm" preload="none">
-                    <source src="{{ $paths[$current]['mp4'] }}" type="video/mp4"/>
-                    Your browser does not support the video tag. I suggest you upgrade your browser.
-                    <source src="{{ $paths[$current]['webm'] }}" type="video/webm"/>
-                    Your browser does not support the video tag. I suggest you upgrade your browser.
-                    {{--<source src="video/smartphone/smartphone.mov"/>--}}
-                    {{--Your browser does not support the video tag. I suggest you upgrade your browser.--}}
-                </video>
+            <div class="px-1 w-full lg:w-1/2">
+                @include('_inline-vue-templates.blog-create-form')
             </div>
 
         </div>
+
     </div>
 
     @push('scripts')
-
-        <script>
-
-            window.addEventListener('resize', initFootage);
-
-            function initFootage() {
-
-                var video = document.getElementById('footage');
-                var width = window.innerWidth;
-
-                if (width >= 1200) {
-                    video.removeAttribute('preload');
-                    video.setAttribute('autoplay', true);
-                    video.setAttribute('loop', true);
-                }
-
-            }
-
-            initFootage();
-
-        </script>
 
         <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
 

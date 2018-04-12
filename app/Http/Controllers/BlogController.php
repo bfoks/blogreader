@@ -5,23 +5,34 @@ namespace App\Http\Controllers;
 use App\Blog;
 use App\Platforms\Clients\Client;
 use App\Platforms\Discoverer;
+use App\Platforms\Exceptions\BlogHasNoPostsException;
 use App\Platforms\Exceptions\BlogNameNotFoundException;
 use App\Platforms\Exceptions\FirstPostNotFoundException;
 use App\Platforms\Exceptions\UnknownPlatformException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class BlogController extends Controller
 {
 
     public function __construct()
     {
-        $this->middleware('auth')->only(['create', 'destroy', 'index', 'store']);
+        $this->middleware('auth')->only(['destroy', 'index']);
     }
 
     public function index()
     {
         /** @var Blog[] $usersBlogs */
         $usersBlogs = auth()->user()->blogs;
+
+        $usersBlogs = DB::table('blogs')
+            ->select(['blogs.id', 'blogs.name', 'blogs.total_posts', 'blogs.url', DB::raw('COUNT(users_read_posts.post_id) as read_posts')])
+            ->join('users_blogs', 'blogs.id', '=', 'users_blogs.blog_id')
+            ->leftJoin('posts', 'blogs.id', '=', 'posts.blog_id')
+            ->leftJoin('users_read_posts', 'posts.id', '=', 'users_read_posts.post_id')
+            ->where('users_blogs.user_id', '=', auth()->user()->id)
+            ->groupBy('blogs.id')
+            ->get();
 
         return view('blogs.index')->with('blogs', $usersBlogs);
     }
@@ -40,10 +51,27 @@ class BlogController extends Controller
         ]);
 
         try {
+
+            $urlComponents = parse_url($request->url);
+
+            if (!$urlComponents) {
+                throw new UnknownPlatformException; // maybe use more suitable exception
+            }
+
+            $cleanedUrl = rtrim($urlComponents['scheme'] . '://' . $urlComponents['host'] . ($urlComponents['path'] ?? ''), '/');
+
+            if ($alreadyExistingBlog = Blog::where('url', $cleanedUrl)->first()) {
+
+                if (auth()->user()) {
+                    auth()->user()->blogs()->syncWithoutDetaching($alreadyExistingBlog);
+                }
+
+                return redirect()->route('blogs.posts.index', [$alreadyExistingBlog]);
+            }
+
             /** @var Blog $blog */
             $blog = new Blog([
-                'url' => rtrim($request->url, '/'),
-                'user_id' => auth()->user()->id
+                'url' => $cleanedUrl,
             ]);
 
             $discoverer = new Discoverer();
@@ -54,11 +82,15 @@ class BlogController extends Controller
 
             $blog->initializeAndSave();
 
+            if (auth()->user()) {
+                auth()->user()->blogs()->attach($blog);
+            }
+
             return redirect()->route('blogs.posts.index', [$blog]);
 
         } catch (UnknownPlatformException $exception) {
             return redirect()->back()->with('flash_message', 'Nieobsługiwany blog ( ͡° ʖ̯ ͡°)');
-        } catch (FirstPostNotFoundException $exception) {
+        } catch (FirstPostNotFoundException | BlogHasNoPostsException $exception) {
             return redirect()->back()->with('flash_message', 'Podany blog nie posiada żadnych wpisów.');
         }
     }
@@ -84,9 +116,7 @@ class BlogController extends Controller
 
     public function destroy(Blog $blog)
     {
-        $this->authorize('delete', $blog);
-
-        $blog->delete();
+        auth()->user()->blogs()->detach($blog);
 
         return redirect()->route('blogs.index');
     }

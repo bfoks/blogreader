@@ -12,7 +12,7 @@ class Guzzle
         'allow_redirects' => [
             'max' => 5,
         ],
-        'connect_timeout' => 5,
+        'connect_timeout' => 15,
 
         /*  TODO
             w oparciu o debugMode (z configa stacji)
@@ -41,29 +41,35 @@ class Guzzle
         // 'proxy' =>
 
         'verify' => false,
-        'timeout' => 5
+        'timeout' => 15
     ];
 
-    public function downloadBody($method, $url)
+    /**
+     * @param $method
+     * @param $url
+     * @return mixed|\Psr\Http\Message\ResponseInterface
+     * @throws \Exception
+     */
+    public function download($method, $url)
     {
         $client = new Client();
 
         try {
-            return (string)$client->request($method, $url, $this->connectionConfig)->getBody();
+            return $client->request($method, $url, $this->connectionConfig);
         } catch (\Exception $exception) {
             throw $exception;
         }
+
+    }
+
+    public function downloadBody($method, $url)
+    {
+        return (string)$this->download($method, $url)->getBody();
     }
 
     public function downloadHeader($method, $url, $headerName)
     {
-        $client = new Client();
-
-        try {
-            return $client->request($method, $url, $this->connectionConfig)->getHeader($headerName);
-        } catch (\Exception $exception) {
-            throw $exception;
-        }
+        return $this->download($method, $url)->getHeader($headerName);
     }
 
 }
