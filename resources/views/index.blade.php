@@ -33,6 +33,10 @@
 
     </div>
 
+    <div class="border-t text-center py-1 text-black opacity-75">
+        Made by <a title="Follow me on Twitter!" href="https://twitter.com/bartfoks">@bartfoks</a>
+    </div>
+
     @push('scripts')
 
         <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
