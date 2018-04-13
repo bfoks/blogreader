@@ -10,15 +10,17 @@
 
             <div class="px-1">
 
-                <h1 class="text-xl sm:text-3xl m-0 text-center">Twój osobisty manager blogów</h1>
+                <h1 class="text-xl sm:text-3xl">Your personal blog manager</h1>
 
-                <ul style="list-style-type: none" class="mt-8 text-xl">
-                    <li class="mb-6">Wygodna nawigacja między wpisami</li>
-                    <li class="mb-6">Chronologiczna kolejność wpisów</li>
-                    <li class="mb-6">Powiadomienia o nowych wpisach na blogu <sup><span class="soon">wkrótce!</span></sup></li>
-                    <li class="mb-6">Zapisywanie notatek dla dowolnego wpisu <sup><span class="soon">wkrótce!</span></sup></li>
-                    <li class="mb-6">Grupowanie wpisów w zbiory <sup><span class="soon">wkrótce!</span></sup></li>
-                    <li class="mb-6">Obsługa platformy Blogspot <sup><span class="soon">wkrótce!</span></sup></li>
+                <ul class="list-reset mt-8 ml-2 text-xl">
+                    {{--<li class="mb-6">All blogs in on place</li>  <!-- with no hassle -->--}}
+                    {{--<li class="mb-6">Auto bookmark system</li> <!--– continue where you left off-->--}}
+                    {{--<li class="mb-6">Posts in chronological order</li>  <!--– read blogs like a book-->--}}
+                    {{--<li class="mb-6">Notifications about new posts <sup><span class="soon">soon!</span></sup></li>--}}
+                    <li class="mb-6">Read blogs like a book</li>
+                    <li class="mb-6">All your favorite blogs in one place</li>
+                    <li class="mb-6">Continue reading where you left off</li>
+                    <li class="mb-6">Email notifications about new posts <sup><span class="soon">soon!</span></sup></li>
                 </ul>
 
             </div>

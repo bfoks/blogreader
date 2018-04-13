@@ -89,9 +89,9 @@ class BlogController extends Controller
             return redirect()->route('blogs.posts.index', [$blog]);
 
         } catch (UnknownPlatformException $exception) {
-            return redirect()->back()->with('flash_message', 'Nieobsługiwany blog ( ͡° ʖ̯ ͡°)');
+            return redirect()->back()->with('flash_message', 'Unsupported blog ( ͡° ʖ̯ ͡°)');
         } catch (FirstPostNotFoundException | BlogHasNoPostsException $exception) {
-            return redirect()->back()->with('flash_message', 'Podany blog nie posiada żadnych wpisów.');
+            return redirect()->back()->with('flash_message', 'This blog has no posts' );
         }
     }
 

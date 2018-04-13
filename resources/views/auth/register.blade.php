@@ -17,7 +17,7 @@
                 </span>
                 @endif
 
-                <input autocomplete="new-password" id="password" type="password" class="my-2 p-2 border w-full" name="password" placeholder="Hasło" required>
+                <input autocomplete="new-password" id="password" type="password" class="my-2 p-2 border w-full" name="password" placeholder="Password" required>
 
                 @if ($errors->has('password'))
                     <span class="text-red text-sm">
@@ -25,11 +25,11 @@
                 </span>
                 @endif
 
-                <input autocomplete="new-password" id="password-confirm" type="password" class="my-2 p-2 border w-full" name="password_confirmation" placeholder="Powtórz hasło"
+                <input autocomplete="new-password" id="password-confirm" type="password" class="my-2 p-2 border w-full" name="password_confirmation" placeholder="Repeat Password"
                        required>
 
                 <button type="submit" class="btn mt-2">
-                    Zarejestruj
+                    Create account
                 </button>
             </div>
 

@@ -11,7 +11,7 @@
         </div>
 
         <p class="hidden sm:block sm:w-3/5 font-sans tracking-wide text-center">
-            <a href="{{ route('blogs.index') }}">Moje blogi</a>
+            <a href="{{ route('blogs.index') }}">My blogs</a>
             &raquo;
             <a href="{{ route('blogs.posts.index', [$post->blog]) }}#{{ $post->id }}">{{ $post->blog->name }}</a>
         </p>
@@ -20,7 +20,7 @@
 
             @if (!session('hide_back_button'))
                 <a class="btn btn-sm border-0"
-                   href="{{ url(route('blogs.posts.show', [$post->blog, $post, 'prev'], false), [], false) }}">Wstecz</a>
+                   href="{{ url(route('blogs.posts.show', [$post->blog, $post, 'prev'], false), [], false) }}">previous</a>
             @endif
 
             @if (session('flash_message'))
@@ -29,7 +29,7 @@
 
             @if (!session('hide_next_button'))
                 <a class="btn btn-primary btn-sm"
-                   href="{{ url(route('blogs.posts.show', [$post->blog, $post, 'next'], false), [], false) }}">Dalej</a>
+                   href="{{ url(route('blogs.posts.show', [$post->blog, $post, 'next'], false), [], false) }}">next</a>
             @endif
 
         </div>

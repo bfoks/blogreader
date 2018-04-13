@@ -29,7 +29,7 @@
                 <input id="password" type="password"
                        class="my-2 p-2 border w-full"
                        name="password"
-                       placeholder="Hasło"
+                       placeholder="Password"
                        required
                 >
 
@@ -42,12 +42,12 @@
 
                 <div class="my-2 text-grey-darker text-sm text-left w-full">
                     <label>
-                        <input type="checkbox" name="remember" {{ old('remember') ? 'checked' : '' }}> Zapamiętaj mnie
+                        <input type="checkbox" name="remember" {{ old('remember') ? 'checked' : '' }}> Remember me
                     </label>
                 </div>
 
                 <button type="submit" class="btn mt-2">
-                    Zaloguj
+                    Log in
                 </button>
 
                 {{--<div class="mt-4">--}}

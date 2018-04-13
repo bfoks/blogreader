@@ -120,7 +120,7 @@ class UserManagingBlogsTest extends TestCase
         $this->post(route('blogs.store'), [
             'url' => 'http://example.com'
         ])
-            ->assertSessionHas('flash_message', 'Nieobsługiwany blog ( ͡° ʖ̯ ͡°)');
+            ->assertSessionHas('flash_message', 'Unsupported blog ( ͡° ʖ̯ ͡°)');
 
         $this->assertEmpty(Blog::all());
     }
@@ -139,7 +139,7 @@ class UserManagingBlogsTest extends TestCase
         $this->post(route('blogs.store'), [
             'url' => 'http://example.com'
         ])
-            ->assertSessionHas('flash_message', 'Podany blog nie posiada żadnych wpisów.');
+            ->assertSessionHas('flash_message', 'This blog has no posts');
 
         $this->assertEmpty(Blog::all());
     }

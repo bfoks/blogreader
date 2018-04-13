@@ -7,9 +7,9 @@
         <div class="mx-1 shadow rounded-sm border">
 
             <div class="flex justify-between text-center items-center text-orange-dark bg-grey-lighter">
-                <div class="w-2/5 lg:w-1/5 text-xl py-2">Przeczytanych</div>
+                <div class="w-2/5 lg:w-1/5 text-xl py-2">Read</div>
                 <div class="w-3/5 lg:w-2/5 lg:text-left text-xl py-2">Blog</div>
-                <div class="hidden lg:block lg:w-2/5 lg:text-left text-xl py-2">Adres</div>
+                <div class="hidden lg:block lg:w-2/5 lg:text-left text-xl py-2">Address</div>
             </div>
 
             @forelse($blogs as $blog)
@@ -27,7 +27,7 @@
                         <form action="{{ route('blogs.destroy', [$blog->id]) }}" method="POST">
                             @method('DELETE')
                             @csrf
-                            <button class="text-grey-darker" title="Usuń z listy" type="submit">X</button>
+                            <button class="text-grey-darker" title="Unfollow" type="submit">X</button>
                         </form>
                     </span>
                     </div>
@@ -35,8 +35,8 @@
 
             @empty
                 <div class="text-center leading-loose p-4 bg-white">
-                    <p class="text-xl">Wygląda na to, że nie obserwujesz jeszcze żadnego bloga.</p>
-                    <p class="mt-4"><a class="btn" href="{{ route('blogs.create') }}">Dodaj pierwszy (✌ ﾟ ∀ ﾟ)☞</a></p>
+                    <p class="text-xl">You do not follow any blogs</p>
+                    <p class="mt-4"><a class="btn" href="{{ route('blogs.create') }}">Add first</a></p>
                 </div>
             @endforelse
         </div>
@@ -47,7 +47,7 @@
         <div class="container mx-auto mt-4 text-right">
             <div class="mx-1 mb-4">
                 <a href="{{ route('blogs.create') }}" class="btn btn-primary">
-                    Dodaj nowy
+                    Add blog
                 </a>
             </div>
         </div>

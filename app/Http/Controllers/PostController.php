@@ -41,7 +41,7 @@ class PostController extends Controller
 
             if (is_null($previousPost)) {
                 return redirect(route('blogs.posts.show', [$blog, $post], false), 302, [], false)
-                    ->with('flash_message', 'Brak wcześniejszych wpisów.')
+                    ->with('flash_message', 'There are no previous posts')
                     ->with('hide_back_button', true);
             }
 
@@ -59,7 +59,7 @@ class PostController extends Controller
             } catch (NextPostNotFoundException $exception) {
 
                 return redirect(route('blogs.posts.show', [$blog, $post], false), 302, [], false)
-                    ->with('flash_message', 'Brak nowszych wpisów.')
+                    ->with('flash_message', 'There are no newer posts')
                     ->with('hide_next_button', true);
 
             }

@@ -1,5 +1,3 @@
-@php(\Carbon\Carbon::setLocale('pl'))
-
 @extends('layouts.page')
 
 @section('content')
@@ -19,10 +17,10 @@
 
                     <div class="text-grey-darker px-4 font-mono">
                         @if($usersReadPosts->contains($post->id))
-                            <span style="background-color: #97ce76"
+                            <span title="read post" style="background-color: #97ce76"
                                   class="inline-flex text-4xl text-white items-center justify-center rounded-full h-10 w-10">&#x2713;</span>
                         @else
-                            <span style="background-color: #eee"
+                            <span title="unread post" style="background-color: #eee"
                                   class="inline-flex text-4xl text-white items-center justify-center rounded-full h-10 w-10">&#x2713;</span>
                         @endif
                     </div>
@@ -37,13 +35,14 @@
 
             @empty
                 <div class="text-center leading-loose p-4 bg-white">
-                    <p class="text-xl">Brak wpisów na tym blogu.</p>
+                    <p class="text-xl">This blog has no posts</p>
                 </div>
             @endforelse
         </div>
 
-        <br>
-
+        <div class="my-4 text-right">
+            <a class="px-2" href="#navbar">back to top</a>
+        </div>
     </div>
 
 @endsection

@@ -67,7 +67,7 @@ class UserBrowsingBlogsPostsTest extends TestCase
 
         $this->get(route('blogs.posts.show', [$blog, $blogPostLatest, 'next']))
             ->assertRedirect(route('blogs.posts.show', [$blog, $blogPostLatest]))
-            ->assertSessionHas('flash_message', 'Brak nowszych wpisów.')
+            ->assertSessionHas('flash_message', 'There are no newer posts')
             ->assertSessionHas('hide_next_button', true);
     }
 
@@ -112,7 +112,7 @@ class UserBrowsingBlogsPostsTest extends TestCase
 
         $this->get(route('blogs.posts.show', [$blog, $blogPostEarliest, 'prev']))
             ->assertRedirect(route('blogs.posts.show', [$blog, $blogPostEarliest]))
-            ->assertSessionHas('flash_message', 'Brak wcześniejszych wpisów.')
+            ->assertSessionHas('flash_message', 'There are no previous posts')
             ->assertSessionHas('hide_back_button', true);
     }
 
