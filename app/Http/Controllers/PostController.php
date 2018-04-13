@@ -16,7 +16,10 @@ class PostController extends Controller
 
     public function index(Blog $blog, Request $request)
     {
-        $blog = $blog->load('posts');
+        // TODO: write a test
+        $blog = $blog->load(['posts' => function ($query) {
+            $query->orderBy('datetime_utc', 'asc');
+        }]);
 
         /** @var Collection $readPosts */
         $readPosts = collect([]);
