@@ -38,7 +38,7 @@ class UserManagingBlogsTest extends TestCase
         $this->get(route('blogs.create'))
             ->assertViewIs('blogs.create')
             ->assertStatus(200)
-            ->assertSee('Adres');
+            ->assertSee('address');
     }
 
     /** @test */

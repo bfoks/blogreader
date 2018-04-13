@@ -18,18 +18,20 @@ class PostController extends Controller
     {
         $blog = $blog->load('posts');
 
-        /** @var Collection $usersReadPosts */
-        $usersReadPosts = collect([]);
+        /** @var Collection $readPosts */
+        $readPosts = collect([]);
 
         if (auth()->user()) {
-            $usersReadPosts = DB::table('posts')
+            $readPosts = DB::table('posts')
                 ->join('users_read_posts', 'posts.id', '=', 'users_read_posts.post_id')
                 ->where('posts.blog_id', '=', $blog->id)
                 ->where('users_read_posts.user_id', '=', auth()->user()->id)
                 ->pluck('posts.id');
+        } else {
+            $readPosts = collect(session()->get('guest_read_posts'));
         }
 
-        return view('blogs.posts.index', ['blog' => $blog, 'usersReadPosts' => $usersReadPosts]);
+        return view('blogs.posts.index', ['blog' => $blog, 'readPosts' => $readPosts]);
     }
 
     public function show(Blog $blog, Post $post, Request $request)
@@ -69,6 +71,9 @@ class PostController extends Controller
         //TODO: write a test
         if (auth()->user()) {
             auth()->user()->posts()->syncWithoutDetaching($post);
+        } else {
+            // TODO: this solution push the same post multiple times...
+            session()->push('guest_read_posts', $post->id);
         }
 
         return view('blogs.posts.show')->with('post', $post);

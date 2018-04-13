@@ -16,7 +16,7 @@
                      class="flex justify-between text-center items-center bg-white hover:bg-grey-lightest hover:text-orange-light relative py-4">
 
                     <div class="text-grey-darker px-4 font-mono">
-                        @if($usersReadPosts->contains($post->id))
+                        @if($readPosts->contains($post->id))
                             <span title="read post" style="background-color: #97ce76"
                                   class="inline-flex text-4xl text-white items-center justify-center rounded-full h-10 w-10">&#x2713;</span>
                         @else
