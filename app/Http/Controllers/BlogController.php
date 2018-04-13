@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Blog;
+use App\Exceptions\FollowedBlogsLimitExceededException;
 use App\Platforms\Clients\Client;
 use App\Platforms\Discoverer;
 use App\Platforms\Exceptions\BlogHasNoPostsException;
@@ -52,6 +53,10 @@ class BlogController extends Controller
 
         try {
 
+            if (auth()->user() && auth()->user()->fresh()->blogs->count() >= config('limits.max_followed_blogs')) {
+                throw new FollowedBlogsLimitExceededException;
+            }
+
             $urlComponents = parse_url($request->url);
 
             if (!$urlComponents) {
@@ -88,10 +93,12 @@ class BlogController extends Controller
 
             return redirect()->route('blogs.posts.index', [$blog]);
 
+        } catch (FollowedBlogsLimitExceededException $exception) {
+            return redirect()->back()->with('flash_message', 'In free beta version user can follow only up to 5 blogs');
         } catch (UnknownPlatformException $exception) {
             return redirect()->back()->with('flash_message', 'Unsupported blog ( ͡° ʖ̯ ͡°)');
         } catch (FirstPostNotFoundException | BlogHasNoPostsException $exception) {
-            return redirect()->back()->with('flash_message', 'This blog has no posts' );
+            return redirect()->back()->with('flash_message', 'This blog has no posts');
         }
     }
 

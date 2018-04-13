@@ -178,6 +178,27 @@ class UserManagingBlogsTest extends TestCase
     }
 
     /** @test */
+    public function user_cannot_observe_more_than_5_blogs()
+    {
+        $user = factory(User::class)->create();
+        $this->signIn($user);
+
+        $this->post(route('blogs.store'), ['url' => 'https://example1.com']);
+        $this->post(route('blogs.store'), ['url' => 'https://example2.com']);
+        $this->post(route('blogs.store'), ['url' => 'https://example3.com']);
+        $this->post(route('blogs.store'), ['url' => 'https://example4.com']);
+        $this->post(route('blogs.store'), ['url' => 'https://example5.com']);
+
+        $this->assertEquals(5, $user->fresh()->blogs->count());
+
+        $this->post(route('blogs.store'), ['url' => 'https://example6.com'])
+            ->assertSessionHas('flash_message', 'In free beta version user can follow only up to 5 blogs');
+
+        $this->assertEquals(5, $user->fresh()->blogs->count());
+
+    }
+
+    /** @test */
     public function after_adding_a_blog_user_is_redirected_to_blogs_posts_index()
     {
         $this->signIn();
