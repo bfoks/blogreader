@@ -39,6 +39,15 @@ class Blog extends Model
         return $this;
     }
 
+    public function findTotalPosts()
+    {
+        if (is_null($this->client)) {
+            throw new \Exception('Client must be set before using findTotalPosts method');
+        }
+
+        return $this->client->findTotalPosts($this);
+    }
+
     public function saveNextPost()
     {
         $clientsProvider = app()->make(ClientsProvider::class);

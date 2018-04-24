@@ -7,6 +7,7 @@ use App\Exceptions\FollowedBlogsLimitExceededException;
 use App\Platforms\Clients\Client;
 use App\Platforms\Discoverer;
 use App\Platforms\Exceptions\BlogHasNoPostsException;
+use App\Platforms\Exceptions\BlogHasToManyPostsException;
 use App\Platforms\Exceptions\BlogNameNotFoundException;
 use App\Platforms\Exceptions\FirstPostNotFoundException;
 use App\Platforms\Exceptions\UnknownPlatformException;
@@ -85,6 +86,10 @@ class BlogController extends Controller
             $client = $discoverer->discoverClientForBlog($blog);
             $blog->setClient($client);
 
+            if ($blog->findTotalPosts() > 1000) {
+                throw new BlogHasToManyPostsException;
+            }
+
             $blog->initializeAndSave();
 
             if (auth()->user()) {
@@ -93,6 +98,8 @@ class BlogController extends Controller
 
             return redirect()->route('blogs.posts.index', [$blog]);
 
+        } catch (BlogHasToManyPostsException $exception) {
+            return redirect()->back()->with('flash_message', 'Blog with more than 1000 posts cannot be added in free beta version');
         } catch (FollowedBlogsLimitExceededException $exception) {
             return redirect()->back()->with('flash_message', 'In free beta version user can follow only up to 5 blogs');
         } catch (UnknownPlatformException $exception) {

@@ -139,4 +139,15 @@ class SelfHostedWPTest extends TestCase
         $this->assertEmpty(Blog::all());
     }
 
+    // TODO:: testy dla innych platform
+
+    /** @test */
+    public function blog_with_more_than_1000_posts_cannot_be_added_and_flash_message_is_showed()
+    {
+        $this->post(route('blogs.store'), [
+            'url' => 'https://www.fs.blog/'
+        ])
+            ->assertSessionHas('flash_message', 'Blog with more than 1000 cannot be added in free beta version');
+    }
+
 }
