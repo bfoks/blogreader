@@ -23,6 +23,9 @@ class CreatePostsTable extends Migration
             $table->unsignedInteger('blog_id');
             $table->timestamps();
 
+            // TODO: write a test
+            $table->unique(['blog_id', 'local_id']);
+
             $table->foreign('blog_id')->references('id')->on('blogs')->onDelete('cascade');
         });
     }
