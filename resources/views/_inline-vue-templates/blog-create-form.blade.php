@@ -17,7 +17,7 @@
                 {{ csrf_field() }}
 
                 <div class="flex-1">
-                    <input ref="url" class="p-4 w-full lg:text-xl border rounded-sm{{ $errors->has('url') ? ' border-red': '' }}" type="text" name="url" placeholder="Blog address" required>
+                    <input ref="url" class="p-4 w-full lg:text-xl border rounded-sm{{ $errors->has('url') ? ' border-red': '' }}" type="text" name="url" placeholder="Paste blog's URL (e.g https://levels.io)" required>
                     <p class="py-2">
                         &nbsp;
                         @if ($errors->has('url'))
