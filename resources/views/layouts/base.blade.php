@@ -19,6 +19,13 @@
 
     @stack('styles')
 
+    <meta property="og:title" content="Blogreader.pro - read & manage your favorite blogs">
+    <meta property="og:description" content="Read every blog in a convenient way">
+    <meta property="og:url" content="https://blogreader.pro">
+    <meta property="og:image" content="https://blogreader.pro/images/og_logo.png">
+    <meta property="og:image:width" content="650">
+    <meta property="og:image:height" content="320">
+
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-118274127-1"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
